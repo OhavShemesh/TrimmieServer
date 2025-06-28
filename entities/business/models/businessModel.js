@@ -12,7 +12,38 @@ const BusinessSchema = new mongoose.Schema({
         type: String,
         enum: ["male", "female", 'unisex']
     },
-    services: [String],
+    services: [
+        {
+            men: [
+                {
+                    type: {
+                        type: String,
+                        required: true
+                    },
+                    time: {
+                        type: Number,
+                        required: true
+                    },
+                    _id: false
+                }
+            ],
+            women: [
+                {
+                    type: {
+                        type: String,
+                        required: true
+                    },
+                    time: {
+                        type: Number,
+                        required: true
+                    },
+                    _id: false
+                }
+            ],
+            _id: false
+        },
+    ],
+    availableAppointments: [{ date: String, times: [] }],
     ownerId: mongoose.Schema.Types.ObjectId, // If users own businesses
 });
 

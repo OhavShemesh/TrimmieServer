@@ -14,7 +14,12 @@ const initialBusinesses = [
             streetAddress: 'רחוב ראשי 123',
         },
         for: "male",
-        services: ["תספורת גברים", "תספורת גברים + זקן", "תספורת נשים"],
+        services: {
+            men: [
+                { type: "תספורת גברים", time: 20 },
+                { type: "תספורת גברים + זקן", time: 30 }
+            ]
+        },
         ownerId: new mongoose.Types.ObjectId(),
     },
     {
@@ -26,9 +31,15 @@ const initialBusinesses = [
             streetAddress: "רחוב קינג גורג' 123",
         },
         for: 'female',
-        services: ["תספורת גברים", "תספורת גברים + זקן", "תספורת נשים"],
+        services: {
+            women: [
+                { type: "פן", time: 25 },
+                { type: "גוונים", time: 90 }
+            ]
+        },
         ownerId: new mongoose.Types.ObjectId(),
-    }, {
+    },
+    {
         name: 'Jackie Barbershop',
         phone: 1234567890,
         email: 'info@Trimmie.com',
@@ -37,7 +48,15 @@ const initialBusinesses = [
             streetAddress: 'רחוב ראשי 123',
         },
         for: 'unisex',
-        services: ["תספורת גברים", "תספורת גברים + זקן"],
+        services: {
+            men: [
+                { type: "תספורת גברים + זקן", time: 30 }
+            ],
+            women: [
+                { type: "קצוות", time: 20 },
+                { type: "גוונים", time: 90 }
+            ]
+        },
         ownerId: new mongoose.Types.ObjectId(),
     }
 ];
@@ -45,6 +64,7 @@ const initialBusinesses = [
 async function uploadInitialBusiness() {
     try {
         await mongoose.connect(process.env.MONGODB_URI);
+        await Business.deleteMany(); // optional: clear existing businesses
         await Business.insertMany(initialBusinesses);
         console.log('Initial businesses uploaded successfully!');
     } catch (err) {

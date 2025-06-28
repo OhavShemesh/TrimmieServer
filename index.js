@@ -15,10 +15,13 @@ connectToMongoDB();
 // Routes
 const businessRoutes = require("./entities/business/businessRoutes");
 const appointmentRoutes = require("./entities/appointment/appointmentRoutes");
+const userRoutes = require("./entities/users/userRoutes")
 const { getAllBusinesses } = require("./entities/business/businessService");
+const { getAllUsers } = require("./entities/users/userService");
 
 app.use("/businesses", businessRoutes);
 app.use("/appointments", appointmentRoutes);
+app.use("/users", userRoutes);
 
 // Optionally seed initial business if SEED_INITIAL_BUSINESS is set
 const seedInitialBusiness = async () => {
@@ -30,6 +33,16 @@ const seedInitialBusiness = async () => {
 }
 
 seedInitialBusiness()
+
+const seedInitialUser = async () => {
+    const isSeeded = await getAllUsers()
+    if (isSeeded.length === 0) {
+        const uploadInitialUser = require('./entities/users/InitialUser');
+        uploadInitialUser();
+    }
+}
+
+seedInitialUser()
 
 
 const PORT = process.env.PORT || 5000;

@@ -7,7 +7,7 @@ dotenv.config();
 const initialBusinesses = [
     {
         name: 'Trimmie Barbershop',
-        phone: 1234567890,
+        phone: 1549465763,
         email: 'info@Trimmie.com',
         address: {
             city: 'תל אביב',
@@ -20,12 +20,13 @@ const initialBusinesses = [
                 { type: "תספורת גברים + זקן", time: 30 }
             ]
         },
-        ownerId: new mongoose.Types.ObjectId(),
+        workingHours: [{ openingHour: "9:30", closingHour: "17:00" }],
+        businessId: new mongoose.Types.ObjectId(),
     },
     {
-        name: 'Sharp Cuts Salon',
-        phone: 9876543210,
-        email: 'contact@sharpcuts.com',
+        name: 'Ohav',
+        phone: 1549465764,
+        email: 'contact@ohav.com',
         address: {
             city: 'ירושלים',
             streetAddress: "רחוב קינג גורג' 123",
@@ -37,15 +38,16 @@ const initialBusinesses = [
                 { type: "גוונים", time: 90 }
             ]
         },
-        ownerId: new mongoose.Types.ObjectId(),
+        workingHours: [{ openingHour: "9:00", closingHour: "17:00" }],
+        businessId: new mongoose.Types.ObjectId(),
     },
     {
         name: 'Jackie Barbershop',
-        phone: 1234567890,
-        email: 'info@Trimmie.com',
+        phone: 1549465761,
+        email: 'info@Jackie.com',
         address: {
-            city: 'תל אביב',
-            streetAddress: 'רחוב ראשי 123',
+            city: 'פתח תקווה',
+            streetAddress: 'רחוב איציק 123',
         },
         for: 'unisex',
         services: {
@@ -57,7 +59,8 @@ const initialBusinesses = [
                 { type: "גוונים", time: 90 }
             ]
         },
-        ownerId: new mongoose.Types.ObjectId(),
+        workingHours: [{ openingHour: "9:00", closingHour: "18:00" }],
+        businessId: new mongoose.Types.ObjectId(),
     }
 ];
 

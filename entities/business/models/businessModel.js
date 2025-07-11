@@ -1,9 +1,21 @@
 const mongoose = require('mongoose');
 
 const BusinessSchema = new mongoose.Schema({
-    name: String,
-    phone: Number,
-    email: String,
+    name: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    phone: {
+        type: Number,
+        unique: true,
+        required: true
+    },
+    email: {
+        type: String,
+        unique: true,
+        required: true
+    },
     address: {
         city: String,
         streetAddress: String,
@@ -43,8 +55,13 @@ const BusinessSchema = new mongoose.Schema({
             _id: false
         },
     ],
+    workingHours: [{ openingHour: { type: String, required: true }, closingHour: { type: String, required: true }, _id: false }],
     availableAppointments: [{ date: String, times: [] }],
-    ownerId: mongoose.Schema.Types.ObjectId, // If users own businesses
+    businessId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        unique: true
+    }
 });
 
 module.exports = mongoose.model('Business', BusinessSchema);

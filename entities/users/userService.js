@@ -50,7 +50,7 @@ const loginUser = async (req, res) => {
             {
                 userId: user._id,
                 businessId: user.businessId,
-                isAdmin: true
+                isAdmin: user.isAdmin
             },
             process.env.JWT_KEY,
             { expiresIn: "1h" }
@@ -67,13 +67,33 @@ const getAllUsers = async () => {
         const allUsers = await User.find()
         return allUsers
     } catch (err) {
-        console.error("Login error:", error);
+        console.error("Login error:", err);
         res.status(500).json({ msg: "Server error" });
     }
 }
+const getUserById = async (req, res) => {
+    try {
+        const { id } = req.query;
+
+        if (!id) {
+            return res.status(400).json({ msg: "User ID is required" });
+        }
+
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        return res.status(200).json(user); // Send user in response
+    } catch (err) {
+        console.error("Get user by ID error:", err);
+        res.status(500).json({ msg: "Server error" });
+    }
+};
 
 module.exports = {
     registerUser,
     loginUser,
-    getAllUsers
+    getAllUsers,
+    getUserById
 };

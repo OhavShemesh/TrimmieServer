@@ -11,4 +11,8 @@ const getAllAppointments = async () => {
     return await Appointment.find();
 };
 
-module.exports = { createAppointment, getAllAppointments };
+const getAllBusinessAppointmentsByBusinessId = async (businessId) => {
+    return await Appointment.find({ businessId: businessId });
+};
+
+module.exports = { createAppointment, getAllAppointments, getAllBusinessAppointmentsByBusinessId };

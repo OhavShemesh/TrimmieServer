@@ -6,8 +6,13 @@ const router = express.Router();
 const {
     createBusiness,
     getAllBusinesses,
+    getBusinessByBusinessId,
+    updateAvailableAppointmentsByBusinessId,
+    addMissingAppointments,
+    removeFromAvailableAppointments,
 } = require("./businessService");
 
+// Get all businesses
 router.get("/", async (req, res) => {
     try {
         const businesses = await getAllBusinesses();
@@ -17,6 +22,7 @@ router.get("/", async (req, res) => {
     }
 });
 
+// Create business
 router.post("/", async (req, res) => {
     try {
         const business = await createBusiness(req.body);
@@ -26,7 +32,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-// Add this route for uploading an initial business
+// Initial business creation (demo)
 router.post('/init', async (req, res) => {
     try {
         const initialBusiness = {
@@ -37,7 +43,7 @@ router.post('/init', async (req, res) => {
                 city: 'Tel Aviv',
                 streetAddress: '123 Main St',
             },
-            ownerId: null, // Set to a real user ID if needed
+            ownerId: null,
         };
         const business = await createBusiness(initialBusiness);
         res.status(201).json(business);
@@ -46,4 +52,45 @@ router.post('/init', async (req, res) => {
     }
 });
 
-module.exports = router; // ✅ IMPORTANT!
+// Get business by ID
+router.get("/getBusinessByBusinessId", async (req, res) => {
+    try {
+        const { businessId } = req.query;
+        const business = await getBusinessByBusinessId(businessId);
+        res.json(business);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Update available appointments
+router.patch("/updateAvailableAppointmentsByBusinessId", async (req, res) => {
+    try {
+        const { availableAppointments, businessId } = req.body;
+        const updated = await updateAvailableAppointmentsByBusinessId(availableAppointments, businessId);
+        res.json(updated);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ✅ NEW: Add missing appointments (without overwriting existing)
+router.patch("/add-missing-appointments", async (req, res) => {
+    try {
+        const result = await addMissingAppointments();
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+router.patch("/removeFromAvailableAppointments", async (req, res) => {
+    try {
+        const { businessId, date, time } = req.body;
+        const result = await removeFromAvailableAppointments(businessId, date, time);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+module.exports = router;

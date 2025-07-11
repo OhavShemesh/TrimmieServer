@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const User = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
     username: {
         type: String,
         required: true,
@@ -14,7 +18,6 @@ const User = new mongoose.Schema({
     businessId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Business",
-        required: true,
     },
     isAdmin: {
         type: Boolean,

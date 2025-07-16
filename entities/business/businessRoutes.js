@@ -8,8 +8,8 @@ const {
     getAllBusinesses,
     getBusinessByBusinessId,
     updateAvailableAppointmentsByBusinessId,
-    addMissingAppointments,
     removeFromAvailableAppointments,
+    getBusinessByName,
 } = require("./businessService");
 
 // Get all businesses
@@ -74,15 +74,6 @@ router.patch("/updateAvailableAppointmentsByBusinessId", async (req, res) => {
     }
 });
 
-// ✅ NEW: Add missing appointments (without overwriting existing)
-router.patch("/add-missing-appointments", async (req, res) => {
-    try {
-        const result = await addMissingAppointments();
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
 router.patch("/removeFromAvailableAppointments", async (req, res) => {
     try {
         const { businessId, date, time } = req.body;
@@ -92,5 +83,13 @@ router.patch("/removeFromAvailableAppointments", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
+router.get("/getBusinessByName", async (req, res) => {
+    try {
+        const { name } = req.query
+        const business = await getBusinessByName(name)
+        res.json(business)
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
 module.exports = router;

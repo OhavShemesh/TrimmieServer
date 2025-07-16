@@ -5,6 +5,7 @@ const {
     createAppointment,
     getAllAppointments,
     getAllBusinessAppointmentsByBusinessId,
+    getAllAppointmentsByPhoneNumber,
 } = require("./appointmentServices");
 
 router.get("/", async (req, res) => {
@@ -35,5 +36,15 @@ router.get("/getAllBusinessAppointmentsByBusinessId", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+router.get("/getAllAppointmentsByPhoneNumber", async (req, res) => {
+    try {
+        const { phoneNumber } = req.query
+        const appointments = await getAllAppointmentsByPhoneNumber(phoneNumber)
+        res.json(appointments);
+    } catch (error) {
+        res.status(500).json({ error: err.message });
+
+    }
+})
 
 module.exports = router; // ✅ MUST export the router

@@ -15,6 +15,7 @@ connectToMongoDB();
 
 // Import cleanup function
 const cleanupOldAppointments = require("./utils/cleanupOldAppointments");
+const addMissingAppointments = require("./utils/addMissingAppointments")
 
 // Routes
 const businessRoutes = require("./entities/business/businessRoutes");
@@ -57,6 +58,7 @@ cleanupOldAppointments()
 cron.schedule("0 0 * * *", async () => {
     console.log("Running daily cleanup of old appointments at midnight...");
     await cleanupOldAppointments();
+    await addMissingAppointments()
 });
 
 const PORT = process.env.PORT || 5000;
